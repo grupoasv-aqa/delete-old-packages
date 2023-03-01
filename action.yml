@@ -41,6 +41,11 @@ inputs:
       Defaults to true for all versions.
     required: false
 
+  specific-version:
+    description: >-
+      Specific version
+    required: false
+
   keep:
     description: >-
       Number of versions to exclude from deletions.
