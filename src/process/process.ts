@@ -9,6 +9,13 @@ export function processPackages(input: Input, packages: Package[]): Package[] {
 }
 
 export function findVersionsToDelete(input: Input, versions: PackageVersion[]): PackageVersion[] {
+  if(input.specificVersion) {
+    return versions.filter((version) => {
+      return version.names.some((name) => {
+        return input.specificVersion && input.specificVersion===name
+      })
+    })
+  } else
   if (input.semverPattern) {
     return versions.filter((version) => {
       return version.names.some((name) => {

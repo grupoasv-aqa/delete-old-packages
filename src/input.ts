@@ -53,6 +53,7 @@ export function getActionInput(): Input {
     names: getMultilineInput("names"),
     versionPattern: getRegExpInput("version-pattern"),
     semverPattern: genSemVerInput("semver-pattern"),
+    specificVersion: getInput("specific-version"),
     keep: Number(getInput("keep") || DEFAULT_KEEP),
     type: getTypeInput("type"),
     token: getInput("token"),
@@ -79,6 +80,14 @@ export function validateInput(input: Input): Input {
 
   if (input.versionPattern && input.semverPattern) {
     throw new Error("Only one of version-pattern and semver-pattern can be specified")
+  }
+
+  if (input.versionPattern && input.specificVersion) {
+    throw new Error("Only one of version-pattern and specific-version can be specified")
+  }
+
+  if (input.semverPattern && input.specificVersion) {
+    throw new Error("Only one of semver-pattern and specific-version can be specified")
   }
 
   if (input.user && input.organization) {

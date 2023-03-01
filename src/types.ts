@@ -13,6 +13,7 @@ export type Input = {
   names: string[]
   versionPattern?: RegExp
   semverPattern?: Range
+  specificVersion: string
   keep: number
   type?: PackageType
   token: string
