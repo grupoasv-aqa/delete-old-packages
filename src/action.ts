@@ -22,6 +22,8 @@ export async function executeAction(input: Input, queryStrategy: QueryStrategy, 
 
   const processedPackages = processPackages(input, packages)
 
+  info(`SV: ${input.specificVersion}`)
+
   if (processedPackages.length <= 0) {
     info("No versions to delete")
 
