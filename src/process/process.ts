@@ -5,13 +5,13 @@ import { info } from "@actions/core"
 
 export function processPackages(input: Input, packages: Package[]): Package[] {
   return packages
-    .map(({ name, versions }) => ({ name, versions: findVersionsToDelete(input, versions).slice(input.keep) }))
+    .map(({ name, versions }) => ({ name, versions: findVersionsToDelete(input, name, versions).slice(input.keep) }))
     .filter((it) => it.versions.length >= 1)
 }
 
-export function findVersionsToDelete(input: Input, versions: PackageVersion[]): PackageVersion[] {
+export function findVersionsToDelete(input: Input, name: string, versions: PackageVersion[]): PackageVersion[] {
   if(input.specificVersion) {
-    info(`Filtering by specificVersion ${input.specificVersion}`)
+    info(`Filtering ${name} by specificVersion ${input.specificVersion}`)
     return versions.filter((version) => {
       return version.names.some((name) => {
         return input.specificVersion && input.specificVersion===name
@@ -19,7 +19,7 @@ export function findVersionsToDelete(input: Input, versions: PackageVersion[]): 
     })
   } else
   if (input.semverPattern) {
-    info(`Filtering by semverPattern ${input.semverPattern}`)
+    info(`Filtering ${name} by semverPattern ${input.semverPattern}`)
     return versions.filter((version) => {
       return version.names.some((name) => {
         const semver = semverCoerce(name)
@@ -28,12 +28,12 @@ export function findVersionsToDelete(input: Input, versions: PackageVersion[]): 
       })
     })
   } else if (input.versionPattern) {
-    info(`Filtering by versionPattern ${input.versionPattern}`)
+    info(`Filtering ${name} by versionPattern ${input.versionPattern}`)
     return versions.filter((version) => {
       return version.names.some((name) => input.versionPattern?.test(name))
     })
   } else {
-    info(`NO FILTERING!!!`)
+    info(`NO FILTERING ON ${name}!!!`)
     return versions
   }
 }
