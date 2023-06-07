@@ -35,6 +35,16 @@ function genSemVerInput(name: string): Range | undefined {
   }
 }
 
+function getSpecificVersionInput(name: string): string | undefined {
+  const input = getInput(name)
+
+  if (input !== "") {
+    return input
+  } else {
+    return undefined
+  }
+}
+
 function getTypeInput(name: string): PackageType | undefined {
   const packageTypes = Object.values(PackageType).map((it) => it.toString())
   const input = getInput(name).toLowerCase()
@@ -53,7 +63,7 @@ export function getActionInput(): Input {
     names: getMultilineInput("names"),
     versionPattern: getRegExpInput("version-pattern"),
     semverPattern: genSemVerInput("semver-pattern"),
-    specificVersion: getInput("specific-version"),
+    specificVersion: getSpecificVersionInput("specific-version"),
     keep: Number(getInput("keep") || DEFAULT_KEEP),
     type: getTypeInput("type"),
     token: getInput("token"),

@@ -67,6 +67,33 @@ describe("getActionInput", () => {
     expect(result).toEqual(expected)
   })
 
+  test("get input from env (specificVersion)", () => {
+    process.env = {
+      ...env,
+      GITHUB_REPOSITORY: "SmartsquareGmbH/delete-old-packages",
+      INPUT_NAMES: "test\ntest2",
+      INPUT_TOKEN: "token",
+      INPUT_USER: "user",
+      "INPUT_SPECIFIC-VERSION": "1.0.0",
+      "INPUT_DRY-RUN": "true",
+    }
+
+    const result = getActionInput()
+    const expected: Input = {
+      names: ["test", "test2"],
+      specificVersion: "1.0.0",
+      keep: 2,
+      token: "token",
+      dryRun: true,
+      user: "user",
+      organization: "",
+      owner: "SmartsquareGmbH",
+      repo: "delete-old-packages",
+    }
+
+    expect(result).toEqual(expected)
+  })
+
   test("get input from env (type)", () => {
     process.env = {
       ...env,

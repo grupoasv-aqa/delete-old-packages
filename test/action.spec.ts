@@ -79,6 +79,28 @@ test("filters by version-pattern", async () => {
   expect(deleteStrategy.deletePackageVersion).toHaveBeenNthCalledWith(1, input, "test", "a")
 })
 
+test("filters by specific-version", async () => {
+  const input: Input = {
+    names: ["test", "test2"],
+    specificVersion: "1.0.0",
+    keep: 0,
+    token: "token",
+    dryRun: false,
+    user: "user",
+    organization: "",
+    owner: "SmartsquareGmbH",
+    repo: "delete-old-packages",
+  }
+
+  const queryStrategy = mock<QueryStrategy>({ queryPackages: () => Promise.resolve(packages) })
+  const deleteStrategy = mock<DeleteStrategy>()
+
+  await executeAction(input, queryStrategy, deleteStrategy)
+
+  expect(deleteStrategy.deletePackageVersion).toHaveBeenCalledTimes(1)
+  expect(deleteStrategy.deletePackageVersion).toHaveBeenNthCalledWith(1, input, "test", "a")
+})
+
 test("Does nothing when empty packages are returned", async () => {
   const input: Input = {
     names: ["test", "test2"],
