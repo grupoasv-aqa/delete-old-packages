@@ -5,7 +5,7 @@ import { info } from "@actions/core"
 
 export function processPackages(input: Input, packages: Package[]): Package[] {
   return packages
-    .map(({ name, versions }) => ({ name, versions: findVersionsToDelete(input, name, versions).slice(input.keep) }))
+    .map(({ name, versions }) => ({ name, versions: findVersionsToDelete(input, name, versions).slice(input.specificVersion?0:input.keep) }))
     .filter((it) => it.versions.length >= 1)
 }
 

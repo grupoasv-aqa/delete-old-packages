@@ -70,41 +70,78 @@ test("filters based on semver", () => {
 })
 
 test("filters based on regex", () => {
-  const result = processPackages(
-    {
-      names: ["test", "test2"],
-      versionPattern: /^.*-test$/,
-      keep: 0,
-      token: "token",
-      dryRun: true,
-      user: "user",
-      organization: "",
-      owner: "SmartsquareGmbH",
-      repo: "delete-old-packages",
-    },
-    [
-      {
-        name: "test",
-        versions: [
-          { id: "a", names: ["2-test"] },
-          { id: "b", names: ["1"] },
-        ],
-      },
-      {
-        name: "test2",
-        versions: [
-          { id: "c", names: ["2-test"] },
-          { id: "d", names: ["1-test"] },
-        ],
-      },
-    ]
-  )
+    const result = processPackages(
+        {
+            names: ["test", "test2"],
+            versionPattern: /^.*-test$/,
+            keep: 0,
+            token: "token",
+            dryRun: true,
+            user: "user",
+            organization: "",
+            owner: "SmartsquareGmbH",
+            repo: "delete-old-packages",
+        },
+        [
+            {
+                name: "test",
+                versions: [
+                    { id: "a", names: ["2-test"] },
+                    { id: "b", names: ["1"] },
+                ],
+            },
+            {
+                name: "test2",
+                versions: [
+                    { id: "c", names: ["2-test"] },
+                    { id: "d", names: ["1-test"] },
+                ],
+            },
+        ]
+    )
 
-  expect(result).toHaveLength(2)
-  expect(result[0].name).toEqual("test")
-  expect(result[0].versions.map((it) => it.id)).toEqual(["a"])
-  expect(result[1].name).toEqual("test2")
-  expect(result[1].versions.map((it) => it.id)).toEqual(["c", "d"])
+    expect(result).toHaveLength(2)
+    expect(result[0].name).toEqual("test")
+    expect(result[0].versions.map((it) => it.id)).toEqual(["a"])
+    expect(result[1].name).toEqual("test2")
+    expect(result[1].versions.map((it) => it.id)).toEqual(["c", "d"])
+})
+test("filters based on specific version", () => {
+    const result = processPackages(
+        {
+            names: ["test", "test2"],
+            specificVersion: "2-test",
+            keep: 2,
+            token: "token",
+            dryRun: true,
+            user: "user",
+            organization: "",
+            owner: "SmartsquareGmbH",
+            repo: "delete-old-packages",
+        },
+        [
+            {
+                name: "test",
+                versions: [
+                    { id: "a", names: ["2-test"] },
+                    { id: "b", names: ["1"] },
+                ],
+            },
+            {
+                name: "test2",
+                versions: [
+                    { id: "c", names: ["2-test"] },
+                    { id: "d", names: ["1-test"] },
+                ],
+            },
+        ]
+    )
+
+    expect(result).toHaveLength(2)
+    expect(result[0].name).toEqual("test")
+    expect(result[0].versions.map((it) => it.id)).toEqual(["a"])
+    expect(result[1].name).toEqual("test2")
+    expect(result[1].versions.map((it) => it.id)).toEqual(["c"])
 })
 
 test("respects keep", () => {

@@ -14,7 +14,7 @@ export async function executeAction(input: Input, queryStrategy: QueryStrategy, 
 
   await group(`Found ${packages.length} package(s) before filtering`, async () => {
     packages.forEach((it) => {
-      info(`${it.name} with ${it.versions.length} version(s): ${JSON.stringify(it.versions)}`)
+      info(`${it.name} with ${it.versions.length} version(s)`)
     })
 
     return Promise.resolve()
